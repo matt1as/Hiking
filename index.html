@@ -1,1 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mountain Hiking Adventure</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; text-align: center; }
+        #game-container { background-color: #f0f0f0; border-radius: 10px; padding: 20px; margin-top: 20px; }
+        #image-container img { max-width: 100%; height: auto; border-radius: 10px; margin-bottom: 20px; }
+        button { margin: 5px; padding: 10px 20px; font-size: 16px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h1>Mountain Hiking Adventure</h1>
+    <div id="game-container">
+        <div id="image-container"></div>
+        <div id="story"></div>
+        <div id="choices"></div>
+    </div>
+    <script>
+        const gameStates = {
+            start: {
+                text: "You wake up on a beautiful Saturday morning. What do you want to do?",
+                image: "https://images.unsplash.com/photo-1470252649378-9c29740c9fa8?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                choices: [
+                    { text: "Check the weather", nextState: "checkWeather" },
+                    { text: "Call a friend", nextState: "callFriend" },
+                    { text: "Go for a walk", nextState: "goForWalk" }
+                ]
+            },
+            checkWeather: {
+                text: "You check the weather. It's a perfect day for outdoor activities!",
+                image: "https://images.unsplash.com/photo-1601297183305-6df142704ea2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                choices: [
+                    { text: "Plan a hike", nextState: "planHike" },
+                    { text: "Invite friends", nextState: "inviteFriends" }
+                ]
+            },
+            callFriend: {
+                text: "You call your friend. They suggest doing something outdoorsy.",
+                image: "https://images.unsplash.com/photo-1523966211575-eb4a01e7dd51?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                choices: [
+                    { text: "Agree and plan together", nextState: "planHike" },
+                    { text: "Suggest inviting more people", nextState: "inviteFriends" }
+                ]
+            },
+            goForWalk: {
+                text: "During your walk, you realize how much you miss nature.",
+                image: "https://images.unsplash.com/photo-1426604966848-d7adac402bff?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                choices: [
+                    { text: "Decide to plan a hike", nextState: "planHike" },
+                    { text: "Call friends to join you", nextState: "inviteFriends" }
+                ]
+            },
+            planHike: {
+                text: "You start planning a hike. It seems more fun with company.",
+                image: "https://images.unsplash.com/photo-1581609836630-9007630f7a7b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                choices: [
+                    { text: "Invite friends", nextState: "inviteFriends" }
+                ]
+            },
+            inviteFriends: {
+                text: "Your friends are excited about the idea of a hike!",
+                image: "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                choices: [
+                    { text: "Finalize the plans", nextState: "finalizeHike" }
+                ]
+            },
+            finalizeHike: {
+                text: "Congratulations! You and your friends are going hiking in the mountains together. Everyone is excited for the adventure ahead!",
+                image: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                choices: [
+                    { text: "Start over", nextState: "start" }
+                ]
+            }
+        };
 
+        let currentState = "start";
+
+        function updateGame() {
+            const state = gameStates[currentState];
+            document.getElementById("story").textContent = state.text;
+            document.getElementById("image-container").innerHTML = `<img src="${state.image}" alt="Scene image">`;
+            const choicesElement = document.getElementById("choices");
+            choicesElement.innerHTML = "";
+            state.choices.forEach(choice => {
+                const button = document.createElement("button");
+                button.textContent = choice.text;
+                button.onclick = () => {
+                    currentState = choice.nextState;
+                    updateGame();
+                };
+                choicesElement.appendChild(button);
+            });
+        }
+
+        updateGame();
+    </script>
+</body>
+</html>
